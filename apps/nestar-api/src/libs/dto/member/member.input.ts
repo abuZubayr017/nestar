@@ -39,4 +39,4 @@ export class LoginInput {
 	@Field(() => String)
 	memberPassword: string;
 
-}
+} 
