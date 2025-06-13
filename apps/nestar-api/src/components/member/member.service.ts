@@ -17,8 +17,8 @@ export class MemberService {
 			//TODO Authentication via token
 			return result;
 		} catch (err) {
-			console.log('ERROR, ServiceModel', err);
-			throw new BadRequestException(err);
+			console.log('ERROR, ServiceModel', err.message);
+			throw new BadRequestException(Message.USED_MEMBER_NICK_OR_PHONE);
 		}
 	}
 
@@ -31,15 +31,15 @@ export class MemberService {
 
 		if (!response || response.memberStatus === MemberStatus.DELETE) {
 			throw new InternalServerErrorException(Message.NO_MEMBER_NICK);
-		}else if(response.memberStatus === MemberStatus.BLOCK) {
-			throw new InternalServerErrorException(Message.BLOCKED_USER)
+		} else if (response.memberStatus === MemberStatus.BLOCK) {
+			throw new InternalServerErrorException(Message.BLOCKED_USER);
 		}
 
 		//TODO: Compare Passords
 		console.log('response:', response);
-		
+
 		const isMatch = memberPassword === response.memberPassword;
-		if(!isMatch) throw new InternalServerErrorException(Message.WRONG_PASSWORD)
+		if (!isMatch) throw new InternalServerErrorException(Message.WRONG_PASSWORD);
 		return response;
 	}
 
