@@ -72,9 +72,12 @@ export class Member {
 	@Field(() => Date, { nullable: true })
 	deletedAt?: Date;
 
-    @Field(() => Date)
+	@Field(() => Date)
 	createdAt: Date;
 
-    @Field(() => Date)
+	@Field(() => Date)
 	updatedAt: Date;
+
+	@Field(() => String, { nullable: true })
+	accessToken?: string;
 }
