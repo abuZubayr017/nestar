@@ -1,10 +1,18 @@
-function reverseInt(num: number): number {
-	let numStr = num.toString();
-	let revNum = numStr.split('').reverse().join('');
-	let result = parseInt(revNum);
+function findDuplicates(arr: number[]): number[] {
+    const count: { [key: number]: number } = {};
+    const result: number[] = [];
 
-	return result;
+    for (const num of arr) {
+        count[num] = (count[num] || 0) + 1;
+    }
+
+    for (const num in count) {
+        if (count[num] >= 2) {
+            result.push(Number(num));
+        }
+    }
+
+    return result;
 }
 
-let a = reverseInt(1234567);
-console.log('result:', a);
+console.log(findDuplicates([1, 2, 2,3, 4, 5, 4, 3, 4])); 
