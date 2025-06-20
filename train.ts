@@ -1,7 +1,11 @@
-function singleNumber(nums: number[]): number {
-	return nums.find((num) => nums.indexOf(num) === nums.lastIndexOf(num))!;
+function firstUniqueCharIndex(str: string): number {
+    for (let i = 0; i < str.length; i++) {
+        if (str.indexOf(str[i]) === str.lastIndexOf(str[i])) {
+            return i;
+        }
+    }
+    return -1;
 }
 
-
-const res = singleNumber([1,2,3,4,2,1,3])
-console.log(res);
+console.log(firstUniqueCharIndex("stamp")); 
+console.log(firstUniqueCharIndex("aabbcdd")); 
