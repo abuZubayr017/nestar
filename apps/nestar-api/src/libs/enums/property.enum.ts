@@ -6,7 +6,7 @@ export enum PropertyType {
 	HOUSE = 'HOUSE',
 }
 registerEnumType(PropertyType, {
-	name: 'PropertyType',
+	name: 'PropertyTypes',
 });
 
 export enum PropertyStatus {
