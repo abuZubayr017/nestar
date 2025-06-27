@@ -1,5 +1,8 @@
-function countNumber(nums: number[]): number {
-    return nums.filter(num => nums.indexOf(num) === nums.lastIndexOf(num)).length;
-  }
-  
-console.log(countNumber([1, 2, 3, 2,4,6])); 
+function moveZero(nums: number[]): number[] {
+  const result = nums.filter(n => n !== 0); 
+  const zeroCount = nums.length - result.length; 
+  return result.concat(Array(zeroCount).fill(0)); 
+}
+
+
+console.log(moveZero([0, 1, 0, 3, 12])); 
