@@ -1,9 +1,57 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { FollowService } from './follow.service';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { Follower, Followers, Followings } from '../../libs/dto/follow/follow';
+import { AuthMember } from '../auth/decorators/authMember.decorator';
+import { ObjectId } from 'mongoose';
+import { shapeIntoMongoObjectId } from '../../libs/config';
+import { WithoutGuard } from '../auth/guards/without.guard';
+import { FollowInquiry } from '../../libs/dto/follow/follow.input';
 
 @Resolver()
 export class FollowResolver {
-	constructor(private readonly followSerice: FollowService) {
-        
-    }
+	constructor(private readonly followSerice: FollowService) {}
+
+	@UseGuards(AuthGuard)
+	@Mutation((returns) => Follower)
+	public async subscribe(@Args('input') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Follower> {
+		console.log('MUTATION: subscribe');
+		const followingId = shapeIntoMongoObjectId(input);
+		return await this.followSerice.subscribe(memberId, followingId);
+	}
+
+	@UseGuards(AuthGuard)
+	@Mutation((returns) => Follower)
+	public async unsubscribe(@Args('input') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Follower> {
+		console.log('MUTATION: unsubscribe');
+		const followingId = shapeIntoMongoObjectId(input);
+		return await this.followSerice.unsubscribe(memberId, followingId);
+	}
+
+	@UseGuards(WithoutGuard)
+	@Query((returns) => Followings)
+	public async getMemberFollowings(
+		@Args('input') input: FollowInquiry,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Followings> {
+		console.log('QUERY: getMemberFollowings');
+		const { followerId } = input.search;
+		input.search.followerId = shapeIntoMongoObjectId(followerId);
+		return await this.followSerice.getMemberFollowings(memberId, input);
+	}
+
+    @UseGuards(WithoutGuard)
+	@Query((returns) => Followers)
+	public async getMemberFollowers(
+		@Args('input') input: FollowInquiry,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Followers> {
+		console.log('QUERY: getMemberFollowers');
+		const { followingId } = input.search;
+		input.search.followingId = shapeIntoMongoObjectId(followingId);
+		return await this.followSerice.getMemberFollowers(memberId, input);
+	}
+
+    
 }
