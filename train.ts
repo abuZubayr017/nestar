@@ -1,8 +1,15 @@
-function moveZero(nums: number[]): number[] {
-  const result = nums.filter(n => n !== 0); 
-  const zeroCount = nums.length - result.length; 
-  return result.concat(Array(zeroCount).fill(0)); 
+function checkArray(arr: any[]): boolean {
+  let hasNumber = false;
+  let hasString = false;
+
+  for (const item of arr) {
+    if (typeof item === 'number') hasNumber = true;
+    if (typeof item === 'string') hasString = true;
+  }
+
+  return hasNumber && hasString;
 }
 
-
-console.log(moveZero([0, 1, 0, 3, 12])); 
+// Testlar:
+console.log(checkArray(['hello', 123, 'world'])); 
+console.log(checkArray(['hello', '123', 'world']));
